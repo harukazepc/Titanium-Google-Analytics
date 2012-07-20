@@ -112,7 +112,8 @@ var Analytics = AnalyticsBase.extend({
 	},
 	
 	//Main public methods
-	start: function(dispatchPeriod){
+	start: function(dispatchPeriod,isAsync){
+                this._isAsync = (isAsync == (undefined || true) ? true : false);
 		if (this.enabled) {
 			this._startNewVisit();
 			this._httpClient = Titanium.Network.createHTTPClient();
@@ -241,7 +242,7 @@ var Analytics = AnalyticsBase.extend({
 				
 				var path = this._constructRequestPath(event);
 				
-				this._httpClient.open('GET', 'http://www.google-analytics.com' + path, false);
+				this._httpClient.open('GET', 'http://www.google-analytics.com' + path, this._isAsync);
 				this._httpClient.setRequestHeader('User-Agent', this._USER_AGENT);
 				this._httpClient.send();
 				
